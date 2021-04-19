@@ -1,0 +1,6 @@
+# created by virtualenv automatically
+# * <- 모든 파일을 깃관리 안 하겠다.
+
+/Lib
+/Scripts
+
