@@ -18,7 +18,8 @@
     <tr>
     <tbody>
         {% for article in articles %}
-        <!--  -->
+        <!-- data.py에서 return받은 articles를 다시 새로운 변수
+        article로 받아서 for문을 돌린다. -->
       <tr>
         <th scope="col">{{article['id']}}</th>
         <td>{{article['title']}}</td>
