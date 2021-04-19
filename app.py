@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from data import Articles
 
 app = Flask(__name__)
 
@@ -13,7 +14,16 @@ def about():
 
 @app.route('/articles')
 def articles():
-    return render_template('articles.html')
+    articles = Articles()
+    # print(articles[0]['title'])
+    # Cmd창에서 확인 가능함
+    return render_template('articles.html', articles = articles)
+    
+
+@app.route('/gong')
+def gong():
+    return render_template('gong.html')
+
 
 
 @app.route('/', methods=['GET'])
