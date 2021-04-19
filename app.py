@@ -13,7 +13,7 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/article')
+@app.route('/articles')
 def articles():
     articles = Articles()
     # Articles() -> data.py의 메소드를 의미
@@ -27,8 +27,12 @@ def articles():
 # .../<id> = params = 변수사용가능
 # 정수로 받고 싶을때 int:___로 사용
 def article(id):
-    print(id)
-    return "success"
+    
+    articles = Articles()
+    article = articles[id-1]
+    print(articles[id-1])
+    return render_template('article.html', article = article)
+
 
 
 @app.route('/gong')
