@@ -12,13 +12,24 @@ app.debug = True
 def about():
     return render_template('about.html')
 
-@app.route('/articles')
+
+@app.route('/article')
 def articles():
     articles = Articles()
+    # Articles() -> data.py의 메소드를 의미
+
     # print(articles[0]['title'])
     # Cmd창에서 확인 가능함
     return render_template('articles.html', articles = articles)
-    
+
+
+@app.route('/article/<int:id>')
+# .../<id> = params = 변수사용가능
+# 정수로 받고 싶을때 int:___로 사용
+def article(id):
+    print(id)
+    return "success"
+
 
 @app.route('/gong')
 def gong():
