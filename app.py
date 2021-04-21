@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from data import Articles
 import pymysql
+from passlib.hash import sha256_crypt
 
 
 app = Flask(__name__)
@@ -117,8 +118,9 @@ def edit(id):
     if request.method == "POST":
         title = request.form['title']
         desc =request.form['desc']
-        sql = "UPDATE topic SET title = %s, body = %s WHERE id = {};" .format(id)
-        input_data = [title, desc]
+        author =request.form['author']
+        sql = "UPDATE topic SET title = %s, body = %s, author = %s WHERE id = {};" .format(id)
+        input_data = [title, desc, author]
         #들어갈 인자값을 순서대로 입력
 
         cursor.execute(sql, input_data)
@@ -135,6 +137,47 @@ def edit(id):
         #     #이건 콘솔에서 확인 가능
         return render_template("edit_article.html", article = topic)
         # edit버튼을 눌러서 들어가면....
+
+@app.route('/register', methods = ["GET", "POST"])
+def register():
+    if request.method == "POST":
+
+        cursor = db.cursor()
+
+        name = request.form['name']
+        email = request.form['email']
+        username = request.form['username']
+        userpw = sha256_crypt.encrypt(request.form['userpw'])
+        
+        sql = "INSERT INTO users (`name`, `email`, `username`, `password`) VALUES (%s, %s, %s, %s);"
+        input_data = [name, email, username, userpw]
+        cursor.execute(sql, input_data)
+        db.commit()
+
+        return render_template('index.html')
+    else:
+        return render_template('register.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  cursor = db.cursor()
+  if request.method == "POST":
+
+    username = request.form['username']
+    userpw_1 = request.form['userpw']
+    # print(userpw_1)
+
+    sql = "SELECT password FROM users WHERE email = %s;"
+    input_data = [username]
+    cursor.execute(sql, input_data)
+    userpw = cursor.fetchone()
+    # print(userpw[0])
+    if sha256_crypt.verify(userpw_1, "$5$rounds=535000$I1nmX1XNWlXixrg8$jo4VNMio7kef7CiXuiRWkFWffVe4NnXWKQuKzt4fQ28"):
+      return "SUCCESS"
+    else:
+      return userpw[0]
+    
 
 
 if __name__ == '__main__':
