@@ -164,20 +164,24 @@ def login():
   cursor = db.cursor()
   if request.method == "POST":
 
-    username = request.form['username']
-    userpw_1 = request.form['userpw']
-    # print(userpw_1)
+        email = request.form['email']
+        userpw_1 = request.form['userpw']
+        # print(userpw_1)
+        sql = "SELECT * FROM users WHERE email = %s;"
+        input_data = [email]
+        cursor.execute(sql, input_data)
+        user = cursor.fetchone()
 
-    sql = "SELECT password FROM users WHERE email = %s;"
-    input_data = [username]
-    cursor.execute(sql, input_data)
-    userpw = cursor.fetchone()
-    # print(userpw[0])
-    if sha256_crypt.verify(userpw_1, "$5$rounds=535000$I1nmX1XNWlXixrg8$jo4VNMio7kef7CiXuiRWkFWffVe4NnXWKQuKzt4fQ28"):
-      return "SUCCESS"
-    else:
-      return userpw[0]
-    
+        if user == None:
+            print(user)
+            return redirect('/register')
+        else:
+            if sha256_crypt.verify(userpw_1, user[4]):
+                return redirect('/articles')
+            else:
+                return user[4]
+  else:
+    return render_template('login.html')
 
 
 if __name__ == '__main__':
