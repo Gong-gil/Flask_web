@@ -110,6 +110,13 @@ def delete(id):
     
     return redirect('/articles') 
 
+@app.route('/<int:id>/edit', methods=['POST', 'GET'])
+def edit(id):
+    if request.method == "POST":
+        return "SUCCEESS"
+    else:
+        return render_template("edit_article.html")
+
 
 if __name__ == '__main__':
     app.run()
