@@ -8,9 +8,9 @@
     method="post" 
     onsubmin="return confirm('이대로 수정하시겠습니까?')">
 
-    <input type="text" name = "title" required>
-    <input type="text" name = "dese" required>
-    <input type="text" name = "author" disabled>
+    <input type="text" name = "title" value="{{article[1]}}" required>
+    <input type="text" name = "dese" value="{{article[2]}}" required>
+    <input type="text" name = "author" value="{{article[3]}}" disabled>
     <input type="submit" value="수정하기">
 
 </form>

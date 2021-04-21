@@ -112,10 +112,17 @@ def delete(id):
 
 @app.route('/<int:id>/edit', methods=['POST', 'GET'])
 def edit(id):
+    cursor = db.cursor
+
     if request.method == "POST":
         return "SUCCEESS"
+        # 버튼을 누르면.....
     else:
-        return render_template("edit_article.html")
+        sql = "SELECT * FROM topic WHERE id = {}" .format(id)
+        cursor.execute(sql)
+        topic = cursor.fetchall
+        return render_template("edit_article.html", article = topic)
+        # edit버튼을 눌러서 들어가면....
 
 
 if __name__ == '__main__':
