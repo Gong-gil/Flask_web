@@ -31,7 +31,7 @@ def articles():
     sql = 'SELECT * FROM topic;'
     cursor.execute(sql)
     topics = cursor.fetchall()
-    print(topics)
+    # print(topics)
     # articles = Articles()
     # Articles() -> data.py의 메소드를 의미
 
@@ -74,7 +74,7 @@ def add_articles():
 
         cursor.execute(sql, input_data)
         db.commit()
-        print(cursor.rowcount)
+        # print(cursor.rowcount)
         # db.close()   <- 오류의 원인이였음
 
         return redirect('/articles') 
@@ -112,15 +112,27 @@ def delete(id):
 
 @app.route('/<int:id>/edit', methods=['POST', 'GET'])
 def edit(id):
-    cursor = db.cursor
+    cursor = db.cursor()
 
     if request.method == "POST":
-        return "SUCCEESS"
-        # 버튼을 누르면.....
+        title = request.form['title']
+        desc =request.form['desc']
+        sql = "UPDATE topic SET title = %s, body = %s WHERE id = {};" .format(id)
+        input_data = [title, desc]
+        #들어갈 인자값을 순서대로 입력
+
+        cursor.execute(sql, input_data)
+        db.commit()
+        #DB에 데이터를 입력할때 commit
+
+        return redirect('/articles')
+        # 버튼을 누르면..... SQL문 입력하고 다시 articles페이지로 이동한다.
     else:
         sql = "SELECT * FROM topic WHERE id = {}" .format(id)
         cursor.execute(sql)
-        topic = cursor.fetchall
+        topic = cursor.fetchone()
+        # print(topic[1])
+        #     #이건 콘솔에서 확인 가능
         return render_template("edit_article.html", article = topic)
         # edit버튼을 눌러서 들어가면....
 

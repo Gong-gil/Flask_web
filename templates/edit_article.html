@@ -4,12 +4,12 @@
 <p class="lead">★EDIT PAGE★</p>
 <hr class="my-4">
 <form 
-    action="/edit" 
+    action="/{{article[0]}}/edit" 
     method="post" 
-    onsubmin="return confirm('이대로 수정하시겠습니까?')">
+    onsubmit="return confirm('이대로 수정하시겠습니까?')">
 
     <input type="text" name = "title" value="{{article[1]}}" required>
-    <input type="text" name = "dese" value="{{article[2]}}" required>
+    <input type="text" name = "desc" value="{{article[2]}}" required>
     <input type="text" name = "author" value="{{article[3]}}" disabled>
     <input type="submit" value="수정하기">
 
